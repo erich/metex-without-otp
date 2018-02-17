@@ -1,10 +1,11 @@
 defmodule Metex.Worker do
-
   def temperature_of(location) do
-    result = url_for(location) |> HTTPoison.get |> parse_response
+    result = url_for(location) |> HTTPoison.get() |> parse_response
+
     case result do
       {:ok, temp} ->
         "#{location}: #{temp} C"
+
       :error ->
         "#{location} not found"
     end
@@ -17,7 +18,7 @@ defmodule Metex.Worker do
 
   defp parse_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
     body
-    |> JSON.decode!
+    |> JSON.decode!()
     |> compute_temperature
   end
 
@@ -27,15 +28,17 @@ defmodule Metex.Worker do
 
   defp compute_temperature(json) do
     try do
-      temp = (json["main"]["temp"] - 273.15)
-      |> Float.round(1)
+      temp =
+        (json["main"]["temp"] - 273.15)
+        |> Float.round(1)
+
       {:ok, temp}
     rescue
-    _ -> :error
+      _ -> :error
     end
   end
 
   defp apikey do
-  "c581eb175190371ea16fd2fc6e1e6c81"
+    "c581eb175190371ea16fd2fc6e1e6c81"
   end
 end

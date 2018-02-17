@@ -22,7 +22,8 @@ defmodule Metex.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:json,       "~> 1.0"}
+      {:json, "~> 1.0"},
+      {:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false}
     ]
   end
 end
